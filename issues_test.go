@@ -337,6 +337,42 @@ func TestIssuesToModify(t *testing.T) {
 			},
 		},
 		{
+			name: "wanted_and_unwanted_has_duplicated_assignees",
+			config: &configuration{
+				onlyMilestone:     false,
+				labelPrefix:       labelPrefix,
+				labelSeparator:    separator,
+				assignees:         []string{user1, user2, user3},
+				assigneesExcluded: []string{user2},
+			},
+			input: []*github.Issue{
+				{
+					Title: &issue1Title,
+					Assignees: []*github.User{
+						{Login: &user1},
+					},
+				},
+				{
+					Title: &issue2Title,
+					Assignees: []*github.User{
+						{Login: &user2},
+					},
+				},
+				{
+					Title: &issue3Title,
+					Assignees: []*github.User{
+						{Login: &user1},
+						{Login: &user2},
+					},
+				},
+			},
+			expected: []*github.Issue{
+				{
+					Title: &issue1Title,
+				},
+			},
+		},
+		{
 			name: "assignees_with_label",
 			config: &configuration{
 				onlyMilestone:  false,
