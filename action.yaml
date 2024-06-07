@@ -22,6 +22,10 @@ inputs:
     description: Only check issues that are part of a milestone
     required: false
     default: "false"
+  assignees:
+    description: Only check issues that have assignees at least one of this parameter
+    required: false
+    default: "[]"
 runs:
   using: docker
   image: docker://ghcr.io/trstringer/require-label-prefix:1.0.1

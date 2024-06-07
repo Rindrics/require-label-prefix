@@ -8,4 +8,5 @@ const (
 	envVarAddLabel       string = "INPUT_ADDLABEL"
 	envVarDefaultLabel   string = "INPUT_DEFAULTLABEL"
 	envVarOnlyMilestone  string = "INPUT_ONLYMILESTONE"
+	envVarAssignees      string = "INPUT_ASSIGNEES"
 )

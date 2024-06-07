@@ -45,9 +45,13 @@ func issuesAreEqual(source, destination []*github.Issue) error {
 func TestIssuesToModify(t *testing.T) {
 	issue1Title := "issue1"
 	issue2Title := "issue2"
+	issue3Title := "issue3"
 	labelPrefix := "prefix"
 	separator := "/"
 	labelNameMatching := fmt.Sprintf("%s%s%s", labelPrefix, separator, "suffix")
+	user1 := "user1"
+	user2 := "user2"
+	user3 := "user3"
 
 	testCases := []struct {
 		name     string
@@ -125,6 +129,120 @@ func TestIssuesToModify(t *testing.T) {
 				},
 				{
 					Title: &issue2Title,
+				},
+			},
+			expected: []*github.Issue{
+				{
+					Title: &issue2Title,
+				},
+			},
+		},
+		{
+			name: "issue_with_specified_assignees",
+			config: &configuration{
+				onlyMilestone:  false,
+				labelPrefix:    labelPrefix,
+				labelSeparator: separator,
+				assignees:      []string{user1, user2, user3},
+			},
+			input: []*github.Issue{
+				{
+					Title: &issue1Title,
+					Assignees: []*github.User{
+						{Login: &user1},
+					},
+				},
+				{
+					Title: &issue2Title,
+				},
+				{
+					Title: &issue3Title,
+					Assignees: []*github.User{
+						{Login: &user1},
+						{Login: &user2},
+						{Login: &user3},
+					},
+				},
+			},
+			expected: []*github.Issue{
+				{
+					Title: &issue1Title,
+				},
+				{
+					Title: &issue3Title,
+				},
+			},
+		},
+		{
+			name: "no_assignee_matched",
+			config: &configuration{
+				onlyMilestone:  false,
+				labelPrefix:    labelPrefix,
+				labelSeparator: separator,
+				assignees:      []string{user1, user2, user3},
+			},
+			input: []*github.Issue{
+				{
+					Title: &issue1Title,
+					Assignees: []*github.User{
+						{Login: github.String("user4")},
+					},
+				},
+			},
+			expected: []*github.Issue{},
+		},
+		{
+			name: "assignees_not_specified",
+			config: &configuration{
+				onlyMilestone:  false,
+				labelPrefix:    labelPrefix,
+				labelSeparator: separator,
+			},
+			input: []*github.Issue{
+				{
+					Title: &issue1Title,
+				},
+				{
+					Title: &issue2Title,
+					Assignees: []*github.User{
+						{Login: &user2},
+					},
+				},
+			},
+			expected: []*github.Issue{
+				{
+					Title: &issue1Title,
+				},
+				{
+					Title: &issue2Title,
+				},
+			},
+		},
+		{
+			name: "assignees_with_label",
+			config: &configuration{
+				onlyMilestone:  false,
+				labelPrefix:    labelPrefix,
+				labelSeparator: separator,
+				assignees:      []string{user1, user2, user3},
+			},
+			input: []*github.Issue{
+				{
+					Title: &issue1Title,
+					Assignees: []*github.User{
+						{Login: &user1},
+					},
+					Labels: []github.Label{
+						{
+							Name: &labelNameMatching,
+						},
+					},
+				},
+				{
+					Title: &issue2Title,
+					Assignees: []*github.User{
+						{Login: &user2},
+					},
 				},
 			},
 			expected: []*github.Issue{

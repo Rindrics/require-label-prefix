@@ -27,6 +27,25 @@ func issuesToModify(issues []*github.Issue, config *configuration) []*github.Iss
 			continue
 		}
 
+		// Check if the issue has the required assignees
+		if len(config.assignees) > 0 {
+			assigned := false
+			for _, assignee := range issue.Assignees {
+				for _, validAssignee := range config.assignees {
+					if assignee.GetLogin() == validAssignee {
+						assigned = true
+						break
+					}
+				}
+				if assigned {
+					break
+				}
+			}
+			if !assigned {
+				continue
+			}
+		}
+
 		if config.onlyMilestone && issue.GetMilestone() == nil {
 			continue
 		}

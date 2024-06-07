@@ -36,4 +36,9 @@ steps:
       # then you would set this to "true". Otherwise, all issues are evaluated.
       # Options: "true", "false" (default).
       # onlyMilestone: false
+
+      # If you want process issue with specific assignees, specify the user names in array.
+      # Otherwise, all issues are evaluated.
+      # Example: [] (default), ["user1", "user2", "user3"]
+      # assignees: []
 ```
