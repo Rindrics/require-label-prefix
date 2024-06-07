@@ -16,6 +16,7 @@ type configuration struct {
 	defaultLabel   string
 	onlyMilestone  bool
 	assignees      []string
+	assigneesExcluded []string
 }
 
 func newConfiguration() (*configuration, error) {
@@ -47,6 +48,7 @@ func newConfiguration() (*configuration, error) {
 	repoOwner := repoParts[0]
 	repoName := repoParts[1]
 	assignees := strings.Split(os.Getenv(envVarAssignees), ",")
+	assigneesExcluded := strings.Split(os.Getenv(envVarAssigneesExcluded), ",")
 
 	return &configuration{
 		repoOwner:      repoOwner,
@@ -58,5 +60,6 @@ func newConfiguration() (*configuration, error) {
 		defaultLabel:   defaultLabel,
 		onlyMilestone:  os.Getenv(envVarOnlyMilestone) == "true",
 		assignees:      assignees,
+		assigneesExcluded: assigneesExcluded,
 	}, nil
 }

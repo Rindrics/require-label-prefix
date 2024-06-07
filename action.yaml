@@ -26,6 +26,10 @@ inputs:
     description: Only check issues that have assignees at least one of this parameter
     required: false
     default: "[]"
+  assigneesExcluded:
+    description: Only check issues that do not have assignees any of this parameter
+    required: false
+    default: "[]"
 runs:
   using: docker
   image: docker://ghcr.io/trstringer/require-label-prefix:1.0.1

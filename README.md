@@ -41,4 +41,9 @@ steps:
       # Otherwise, all issues are evaluated.
       # Example: [] (default), ["user1", "user2", "user3"]
       # assignees: []
+
+      # If you want exclude issue with specific assignees, specify the user names in array.
+      # Otherwise, all issues are evaluated.
+      # Example: [] (default), ["user1", "user2", "user3"]
+      # assigneesExcluded: []
 ```

@@ -46,6 +46,25 @@ func issuesToModify(issues []*github.Issue, config *configuration) []*github.Iss
 			}
 		}
 
+		// Exclude issues with unwanted assignees
+		if len(config.assigneesExcluded) > 0 {
+			excluded := false
+			for _, assignee := range issue.Assignees {
+				for _, excludedAssignee := range config.assigneesExcluded {
+					if assignee.GetLogin() == excludedAssignee {
+						excluded = true
+						break
+					}
+				}
+				if excluded {
+					break
+				}
+			}
+			if excluded {
+				continue
+			}
+		}
+
 		if config.onlyMilestone && issue.GetMilestone() == nil {
 			continue
 		}

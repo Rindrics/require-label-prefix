@@ -9,4 +9,5 @@ const (
 	envVarDefaultLabel   string = "INPUT_DEFAULTLABEL"
 	envVarOnlyMilestone  string = "INPUT_ONLYMILESTONE"
 	envVarAssignees      string = "INPUT_ASSIGNEES"
+	envVarAssigneesExcluded string = "INPUT_ASSIGNEESEXCLUDED"
 )

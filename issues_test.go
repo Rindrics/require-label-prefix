@@ -46,6 +46,7 @@ func TestIssuesToModify(t *testing.T) {
 	issue1Title := "issue1"
 	issue2Title := "issue2"
 	issue3Title := "issue3"
+	issue4Title := "issue4"
 	labelPrefix := "prefix"
 	separator := "/"
 	labelNameMatching := fmt.Sprintf("%s%s%s", labelPrefix, separator, "suffix")
@@ -215,6 +216,123 @@ func TestIssuesToModify(t *testing.T) {
 				},
 				{
 					Title: &issue2Title,
+				},
+			},
+		},
+		{
+			name: "unwanted_assignees_specified",
+			config: &configuration{
+				onlyMilestone:     false,
+				labelPrefix:       labelPrefix,
+				labelSeparator:    separator,
+				assigneesExcluded: []string{user1},
+			},
+			input: []*github.Issue{
+				{
+					Title: &issue1Title,
+					Assignees: []*github.User{
+						{Login: &user1},
+					},
+				},
+				{
+					Title: &issue2Title,
+					Assignees: []*github.User{
+						{Login: &user1},
+						{Login: &user2},
+					},
+				},
+				{
+					Title: &issue3Title,
+					Assignees: []*github.User{
+						{Login: &user2},
+						{Login: &user3},
+					},
+				},
+				{
+					Title:     &issue4Title,
+					Assignees: []*github.User{},
+				},
+			},
+			expected: []*github.Issue{
+				{
+					Title: &issue3Title,
+				},
+				{
+					Title: &issue4Title,
+				},
+			},
+		},
+		{
+			name: "unwanted_assignees_not_specified",
+			config: &configuration{
+				onlyMilestone:  false,
+				labelPrefix:    labelPrefix,
+				labelSeparator: separator,
+			},
+			input: []*github.Issue{
+				{
+					Title: &issue1Title,
+					Assignees: []*github.User{
+						{Login: &user1},
+					},
+				},
+				{
+					Title: &issue2Title,
+					Assignees: []*github.User{
+						{Login: &user1},
+						{Login: &user2},
+					},
+				},
+				{
+					Title:     &issue3Title,
+					Assignees: []*github.User{},
+				},
+			},
+			expected: []*github.Issue{
+				{
+					Title: &issue1Title,
+				},
+				{
+					Title: &issue2Title,
+				},
+				{
+					Title: &issue3Title,
+				},
+			},
+		},
+		{
+			name: "intersection_of_wanted_and_unwanted_assignees",
+			config: &configuration{
+				onlyMilestone:     false,
+				labelPrefix:       labelPrefix,
+				labelSeparator:    separator,
+				assignees:         []string{user1},
+				assigneesExcluded: []string{user2},
+			},
+			input: []*github.Issue{
+				{
+					Title: &issue1Title,
+					Assignees: []*github.User{
+						{Login: &user1},
+					},
+				},
+				{
+					Title: &issue2Title,
+					Assignees: []*github.User{
+						{Login: &user1},
+						{Login: &user2},
+					},
+				},
+				{
+					Title: &issue3Title,
+					Assignees: []*github.User{
+						{Login: &user2},
+					},
+				},
+			},
+			expected: []*github.Issue{
+				{
+					Title: &issue1Title,
 				},
 			},
 		},
