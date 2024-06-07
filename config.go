@@ -7,15 +7,15 @@ import (
 )
 
 type configuration struct {
-	repoOwner      string
-	repoName       string
-	token          string
-	labelPrefix    string
-	labelSeparator string
-	addLabel       bool
-	defaultLabel   string
-	onlyMilestone  bool
-	assignees      []string
+	repoOwner         string
+	repoName          string
+	token             string
+	labelPrefix       string
+	labelSeparator    string
+	addLabel          bool
+	defaultLabel      string
+	onlyMilestone     bool
+	assignees         []string
 	assigneesExcluded []string
 }
 
@@ -51,15 +51,15 @@ func newConfiguration() (*configuration, error) {
 	assigneesExcluded := strings.Split(os.Getenv(envVarAssigneesExcluded), ",")
 
 	return &configuration{
-		repoOwner:      repoOwner,
-		repoName:       repoName,
-		token:          os.Getenv(envVarToken),
-		labelPrefix:    labelPrefix,
-		labelSeparator: labelSeparator,
-		addLabel:       addLabel,
-		defaultLabel:   defaultLabel,
-		onlyMilestone:  os.Getenv(envVarOnlyMilestone) == "true",
-		assignees:      assignees,
+		repoOwner:         repoOwner,
+		repoName:          repoName,
+		token:             os.Getenv(envVarToken),
+		labelPrefix:       labelPrefix,
+		labelSeparator:    labelSeparator,
+		addLabel:          addLabel,
+		defaultLabel:      defaultLabel,
+		onlyMilestone:     os.Getenv(envVarOnlyMilestone) == "true",
+		assignees:         assignees,
 		assigneesExcluded: assigneesExcluded,
 	}, nil
 }
